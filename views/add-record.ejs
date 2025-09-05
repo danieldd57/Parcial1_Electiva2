@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./templates/header')%>
+  <body>
+    <div class="container">
+      <header>
+        </header>
+      <div class="card">
+        <div class="card-header">
+          <h1>Adicionar Registro</h1>
+        </div>
+        <div class="card-body">
+          <form action="/" method="post">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha"><br>
+
+            <label for="departamento">Departamento</label>
+            <select id="departamento" name="departamento"></select><br>
+
+            <label for="municipio">Municipio</label>
+            <select id="municipio" name="municipio"></select><br>
+            
+            <button type="submit" class="btn btn-warning">Enviar</button>
+          </form>
+        </div>
+        <div class="card-footer">Pie de página</div>
+      </div>
+      <footer><%- include('./templates/footer')%></footer>
+    </div>
+
+    <script>
+      const departamentosSelect = document.getElementById('departamento');
+      const municipiosSelect = document.getElementById('municipio');
+
+      const ubicacionesDisponibles = <%- JSON.stringify(ubicacionesDisponibles) %>;
+
+      function populateMunicipios(departamento) {
+        municipiosSelect.innerHTML = '';
+        const municipios = ubicacionesDisponibles[departamento] || [];
+        
+        if (municipios.length === 0) {
+            const option = document.createElement('option');
+            option.textContent = 'Seleccione un departamento';
+            municipiosSelect.appendChild(option);
+        } else {
+            municipios.forEach(muni => {
+                const option = document.createElement('option');
+                option.value = muni;
+                option.textContent = muni;
+                municipiosSelect.appendChild(option);
+            });
+        }
+      }
+
+      function populateDepartamentos() {
+        for (const depto in ubicacionesDisponibles) {
+            const option = document.createElement('option');
+            option.value = depto;
+            option.textContent = depto;
+            departamentosSelect.appendChild(option);
+        }
+      }
+      
+      populateDepartamentos();
+      
+      departamentosSelect.addEventListener('change', (e) => {
+        populateMunicipios(e.target.value);
+      });
+
+      populateMunicipios(departamentosSelect.value);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./templates/header')%>
+  <body>
+    <div class="container">
+      <header>
+      </header>
+      <div class="card">
+        <div class="card-header">
+          <h1><%= title %></h1>
+        </div>
+        <div class="card-body">
+          <form action="/" method="get" class="filter-form">
+            <input type="text" name="filtro" placeholder="Filtrar por departamento o municipio">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+          </form>
+          <hr>
+          <%if( data.length > 0){%>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">Municipio</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%data.forEach( ubicacion => {%>
+                <tr>
+                  <td><%= ubicacion.fecha %></td>
+                  <td><%= ubicacion.departamento %></td>
+                  <td><%= ubicacion.municipio %></td>
+                  <td>
+                    <form action="/delete" method="post" style="display:inline;">
+                      <input type="hidden" name="fecha" value="<%= ubicacion.fecha %>">
+                      <input type="hidden" name="departamento" value="<%= ubicacion.departamento %>">
+                      <input type="hidden" name="municipio" value="<%= ubicacion.municipio %>">
+                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                  </td>
+                </tr>
+              <%})%>
+            </tbody>
+          </table>
+          <%}else{%>
+            <h3>No hay Registros</h3>
+          <%}%>
+          <a href="/new-pc" class="btn btn-secondary">Nuevo Registro</a>
+        </div> 
+      </div>
+      <footer><%- include('./templates/footer')%></footer>
+    </div>
+  </body>
+</html>
